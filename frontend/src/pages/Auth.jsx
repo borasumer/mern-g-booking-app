@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
+
 import './Auth.css';
-import authContext from '../context/auth-context';
+import AuthContext from '../context/auth-context';
 
 class AuthPage extends Component {
   state = {
     isLogin: true
   };
 
-  static contextType = authContext;
+  static contextType = AuthContext;
+
   constructor(props) {
     super(props);
     this.emailEl = React.createRef();
@@ -72,7 +74,8 @@ class AuthPage extends Component {
           this.context.login(
             resData.data.login.token,
             resData.data.login.userId,
-            resData.data.login.tokenExpiration)
+            resData.data.login.tokenExpiration
+          );
         }
       })
       .catch(err => {
@@ -82,14 +85,14 @@ class AuthPage extends Component {
 
   render() {
     return (
-      <form className="auth-form" onSubmit={this.submitHandler}>
+      <form className="auth-form" onSubmit={this.submitHandler} autoComplete="on">
         <div className="form-control">
           <label htmlFor="email">E-Mail</label>
           <input type="email" id="email" ref={this.emailEl} />
         </div>
         <div className="form-control">
           <label htmlFor="password">Password</label>
-          <input type="password" id="password" ref={this.passwordEl} />
+          <input type="password" id="password" ref={this.passwordEl} autoComplete="on" />
         </div>
         <div className="form-actions">
           <button type="submit">Submit</button>
