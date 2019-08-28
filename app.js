@@ -1,16 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const graphqlHttp = require('express-graphql');
-const bcrypt = require('bcryptjs');
-const { buildSchema } = require('graphql');
 const mongoose = require('mongoose');
 const graphqlSchema = require('./graphql/schema');
 const graphqlResolvers = require('./graphql/resolvers');
 const isAuth = require('./middleware/is-auth');
+const cors = require('cors');
 
 require('dotenv').config();
 
 const app = express();
+
+app.use(cors());
 
 app.use(bodyParser.json());
 
@@ -45,7 +46,7 @@ app.use('/graphql', graphqlHttp({
   graphiql: true
 }));
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 mongoose.connect(process.env.DB_URI, { auth: { user: process.env.DB_USER, password: process.env.DB_PASS }, useNewUrlParser: true })
   .then(app.listen(port))
   .catch(err => {

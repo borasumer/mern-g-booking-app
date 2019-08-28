@@ -20,13 +20,13 @@ module.exports = {
     }
   },
   //! we return when we need funcs to be async and are waited 
-  bookEvent: async (args, require) => {
+  bookEvent: async (args, req) => {
     if (!req.isAuth) {
       throw new Error('Unauthenticated');
     }
     const fetchedEvent = await Event.findOne({ _id: args.eventId });
     const booking = new Booking({
-      user: "5d640ba6dda316e2b120b504",
+      user: req.userId,
       event: fetchedEvent
     })
     const result = await booking.save();
