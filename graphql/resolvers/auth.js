@@ -1,5 +1,6 @@
 const User = require('../../models/user');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
   //! we return when we need funcs to be async and are waited 
@@ -31,6 +32,17 @@ module.exports = {
     const isEqual = await bcrypt.compare(password, user.password);
     if (!isEqual) {
       throw new Error('Password you entered is wrong!')
+    }
+    const token = jwt.sign({
+      userId: user.id,
+      email: user.email
+    }, 'somesupersecretkey', {
+        expiresIn: '1h'
+      });
+    return {
+      userId: user.id,
+      token: token,
+      tokenExpiration: 1
     }
   }
 };
