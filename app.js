@@ -6,6 +6,7 @@ const { buildSchema } = require('graphql');
 const mongoose = require('mongoose');
 const graphqlSchema = require('./graphql/schema');
 const graphqlResolvers = require('./graphql/resolvers');
+const isAuth = require('./middleware/is-auth');
 
 require('dotenv').config();
 
@@ -35,6 +36,8 @@ const user = async userId => {
     throw err;
   }
 }
+
+app.use(isAuth); //!middleware function for authentiation for every incoming request
 
 app.use('/graphql', graphqlHttp({
   schema: graphqlSchema,
