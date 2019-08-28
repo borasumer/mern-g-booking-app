@@ -6,14 +6,14 @@ module.exports = (req, res, next) => {
     req.isAuth = false;
     return next();
   }
-  const token = authHeader.split(' ')[1]; //!to get the token by spliting the header authorization value which is bearer and the token
+  const token = authHeader.split(' ')[1];
   if (!token || token === '') {
     req.isAuth = false;
     return next();
   }
   let decodedToken;
   try {
-    const decodedToken = jwt.verify(token, 'somesupersecretkey')
+    decodedToken = jwt.verify(token, 'somesupersecretkey');
   } catch (err) {
     req.isAuth = false;
     return next();
@@ -25,4 +25,4 @@ module.exports = (req, res, next) => {
   req.isAuth = true;
   req.userId = decodedToken.userId;
   next();
-}
+};
